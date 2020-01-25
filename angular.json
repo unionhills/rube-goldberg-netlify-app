@@ -122,6 +122,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "rube-goldberg-app"
+    }
+  },
+  "defaultProject": "rube-goldberg-app",
+  "cli": {
+    "analytics": "8f855938-e13f-4e63-ad58-a6bb90ceecdc"
+  }
 }
