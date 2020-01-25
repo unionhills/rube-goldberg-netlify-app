@@ -6,22 +6,26 @@
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "esModuleInterop": true,
+    "downlevelIteration": true,
     "allowSyntheticDefaultImports": true,
+    "importHelpers": true,
+    "moduleResolution": "node",
     "sourceMap": true,
-    "baseUrl": "./",
+    "baseUrl": "functions",
     "incremental": true,
-    "outDir": "./dist/functions",
+    "rootDir": ".",
+    "outDir": "dist",
     "types": []
   },
   "include": [
-    "functions/**/*.ts"
+    "functions/**/*.ts",
+    "functions/**/*.json"
   ],
   "exclude": [
     "node_modules",
+    "functions/**/node_modules",
     "test",
     "dist",
-    "functions/test.ts",
     "functions/**/*.spec.ts"
   ]
 }
