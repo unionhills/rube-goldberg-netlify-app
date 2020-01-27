@@ -2,6 +2,7 @@
   "name": "rube-goldberg-app",
   "version": "0.0.1",
   "scripts": {
+    "postinstall": "npm install --prefix functions/api functions/api",
     "ng": "ng",
     "start": "ng serve",
     "prebuild": "rimraf dist",
