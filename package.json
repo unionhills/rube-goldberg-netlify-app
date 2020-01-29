@@ -12,7 +12,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "build:ui": "ng build",
-    "build:functions": "tsc -p tsconfig.functions.json"
+    "build:functions": "tsc -p tsconfig.functions.json",
+    "format": "prettier --write \"{src,functions}/**/*.ts\""
   },
   "private": true,
   "dependencies": {
@@ -51,5 +52,8 @@
     "ts-node": "~8.3.0",
     "tslint": "~5.18.0",
     "typescript": "^3.7.5"
+  },
+  "optionalDependencies": {
+    "prettier": "^1.19.1"
   }
 }
