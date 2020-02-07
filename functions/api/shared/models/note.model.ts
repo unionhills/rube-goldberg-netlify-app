@@ -8,7 +8,7 @@
  *
  */
 
-export class Message {
+export class Note {
   id: string;
 
   subject: string;
