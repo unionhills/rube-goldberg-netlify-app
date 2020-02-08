@@ -7,8 +7,8 @@ export const handler = async (event, context) => {
         status: 'pass',
         path: event.path
       })
-    }
+    };
   } catch (err) {
     return { statusCode: 500, body: err.toString() };
   }
-}
+};

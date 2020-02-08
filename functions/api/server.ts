@@ -10,19 +10,17 @@ export class ApiServer extends Server {
   constructor() {
     super(true);
     this.app.use(bodyParser.json());
-    this.app.use(bodyParser.urlencoded({extended: true}));
+    this.app.use(bodyParser.urlencoded({ extended: true }));
     this.setupControllers();
   }
 
   private setupControllers(): void {
-    const ctlrInstances = [
-      new ApiHealthController()
-    ];
+    const ctlrInstances = [new ApiHealthController()];
 
     super.addControllers(ctlrInstances);
-}
+  }
 
   public get expressApp(): Application {
-      return (this.app);
+    return this.app;
   }
 }
