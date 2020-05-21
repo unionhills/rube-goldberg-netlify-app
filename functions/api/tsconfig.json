@@ -12,20 +12,19 @@
     "importHelpers": true,
     "moduleResolution": "node",
     "sourceMap": true,
-    "baseUrl": "functions",
+    "baseUrl": ".",
     "incremental": true,
     "rootDir": ".",
-    "outDir": "dist"
+    "outDir": "../../dist"
   },
   "include": [
-    "functions/**/*.ts",
-    "functions/**/*.json"
+    "**/*.ts",
+    "**/*.json"
   ],
   "exclude": [
     "node_modules",
-    "functions/**/node_modules",
     "test",
     "dist",
-    "functions/**/*.spec.ts"
+    "**/*.spec.ts"
   ]
 }
