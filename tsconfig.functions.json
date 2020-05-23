@@ -15,7 +15,8 @@
     "baseUrl": "functions",
     "incremental": true,
     "rootDir": ".",
-    "outDir": "dist"
+    "outDir": "dist",
+    "types": []
   },
   "include": [
     "functions/**/*.ts",
@@ -24,7 +25,7 @@
   "exclude": [
     "node_modules",
     "functions/**/node_modules",
-    "test",
+    "functions/**/test",
     "dist",
     "functions/**/*.spec.ts"
   ]

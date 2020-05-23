@@ -1,4 +1,10 @@
 [build]
-  command   = "npm install && npm install --prefix functions/api functions/api && npm run build"
-  functions = "dist/functions"
-  publish   = "dist/rube-goldberg-app"
+  command    = "npm install && npm install --prefix functions/api functions/api && npm run build"
+  functions  = "dist/functions"
+  publish    = "dist/rube-goldberg-app"
+
+[dev]
+  command    = "npm start"
+  targetPort = 4200
+  publish    = "dist/rube-goldberg-app"
+  autoLaunch = true

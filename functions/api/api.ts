@@ -1,5 +1,7 @@
 // Docs on event and context https://www.netlify.com/docs/functions/#the-handler-method
-import * as serverless from 'serverless-http';
+//import * as serverless from 'serverless-http';
+
+import serverless from 'serverless-http';
 import { ApiServer } from './server';
 
 const apiServer = new ApiServer();

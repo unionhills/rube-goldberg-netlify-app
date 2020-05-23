@@ -15,7 +15,11 @@
     "baseUrl": ".",
     "incremental": true,
     "rootDir": ".",
-    "outDir": "../../dist"
+    "outDir": "../../dist/functions/api",
+    "types": [
+      "node",
+      "express"
+    ]
   },
   "include": [
     "**/*.ts",
@@ -25,6 +29,7 @@
     "node_modules",
     "test",
     "dist",
+    "**/*.test.ts",
     "**/*.spec.ts"
   ]
 }

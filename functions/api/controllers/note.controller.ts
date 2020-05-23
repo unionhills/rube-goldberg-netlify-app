@@ -9,7 +9,7 @@ export class NoteController {
   constructor(private readonly noteSvc: NoteService = new NoteService()) {}
 
   @Get()
-  private getNotes(req: Request, res: Response) {
+  public getNotes(req: Request, res: Response) {
     const notes: Note[] = this.noteSvc.getNotes();
 
     return res.json(notes);
