@@ -12,21 +12,24 @@
     "importHelpers": true,
     "moduleResolution": "node",
     "sourceMap": true,
-    "baseUrl": "functions",
+    "baseUrl": ".",
     "incremental": true,
     "rootDir": ".",
-    "outDir": "dist",
-    "types": []
+    "outDir": "../../dist/functions/api",
+    "types": [
+      "node",
+      "express"
+    ]
   },
   "include": [
-    "functions/**/*.ts",
-    "functions/**/*.json"
+    "**/*.ts",
+    "**/*.json"
   ],
   "exclude": [
     "node_modules",
-    "functions/**/node_modules",
-    "functions/**/test",
+    "test",
     "dist",
-    "functions/**/*.spec.ts"
+    "**/*.test.ts",
+    "**/*.spec.ts"
   ]
 }
