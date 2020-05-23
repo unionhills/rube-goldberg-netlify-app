@@ -39,7 +39,7 @@ describe("Test repo update operation", () => {
   });
 });
 
-describe("Test repo update operation", () => {
+describe("Test repo delete operation", () => {
   test("Check to if we can delete a note properly in the NoteRepository", () => {
     const noteRepo: NoteRepository = new NoteRepository();
 
