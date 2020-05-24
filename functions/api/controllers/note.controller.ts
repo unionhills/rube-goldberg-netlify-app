@@ -9,14 +9,14 @@ export class NoteController {
   constructor(private readonly noteSvc: NoteService = new NoteService()) {}
 
   @Get()
-  public getNotes(req: Request, res: Response) {
+  private getNotes(req: Request, res: Response): Response {
     const notes: Note[] = this.noteSvc.getNotes();
 
     return res.json(notes);
   }
 
   @Get(':id')
-  private getNote(req: Request, res: Response) {
+  private getNote(req: Request, res: Response): Response {
     Logger.Info(req.params.id);
 
     const noteId: string = req.params.id;
@@ -26,7 +26,7 @@ export class NoteController {
   }
 
   @Post()
-  private createNote(req: Request, res: Response) {
+  private createNote(req: Request, res: Response): Response {
     Logger.Info(`Request Body = ${req.body}`);
 
     const note: Note = JSON.parse(req.body);
@@ -36,7 +36,7 @@ export class NoteController {
   }
 
   @Put(':id')
-  private updateNote(req: Request, res: Response) {
+  private updateNote(req: Request, res: Response): Response {
     Logger.Info(req.params.id);
     Logger.Info(req.body);
 
@@ -48,7 +48,7 @@ export class NoteController {
   }
 
   @Delete(':id')
-  private deleteNote(req: Request, res: Response) {
+  private deleteNote(req: Request, res: Response): Response {
     Logger.Info(req.params.id);
     const noteId: string = req.params.id;
 

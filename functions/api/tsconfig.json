@@ -18,7 +18,8 @@
     "outDir": "../../dist/functions/api",
     "types": [
       "node",
-      "express"
+      "express",
+      "jest"
     ]
   },
   "include": [
