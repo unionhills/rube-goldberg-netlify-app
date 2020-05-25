@@ -1,4 +1,4 @@
-import { Note } from '../shared/models';
+import { Note } from '../models';
 
 /**
  * This class handles the CRUD operations to our persistence store

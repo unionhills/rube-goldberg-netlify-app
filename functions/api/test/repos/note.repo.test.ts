@@ -1,4 +1,4 @@
-import { Note } from '../../shared/models';
+import { Note } from '../../models';
 import { NoteRepository } from '../../repos';
 
 describe("Let's try testing the repo", () => {

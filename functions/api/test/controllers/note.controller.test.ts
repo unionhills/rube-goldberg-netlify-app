@@ -1,4 +1,4 @@
-import { Note } from '../../shared/models';
+import { Note } from '../../models';
 import { NoteController } from '../../controllers';
 
 import { Request } from 'jest-express/lib/request';

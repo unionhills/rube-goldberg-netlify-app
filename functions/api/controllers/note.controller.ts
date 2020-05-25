@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Controller, Get, Put, Post, Delete } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
-import { Note } from '../shared/models';
+import { Note } from '../models';
 import { NoteService } from '../services/note.service';
 
 @Controller('.netlify/functions/api/notes')
