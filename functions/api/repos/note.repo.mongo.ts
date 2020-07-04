@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import { Mongoose, Schema, Document, Error } from 'mongoose';
 
 export interface INote extends Document {
   subject: string;
@@ -6,11 +6,17 @@ export interface INote extends Document {
   correlationId: string;
 }
 
-const NoteSchema: Schema = new Schema({
-  subject: { type: String },
-  body: { type: String },
-  correlationId: { type: String }
-});
+export class NoteMongoRepository {
+  constructor(private mongooseConnection: Mongoose) {
+  }
 
-// Export the model and return your INote interface
-export default mongoose.model<INote>('Note', NoteSchema);
+  public model() {
+    const NoteSchema: Schema = new Schema({
+      subject: { type: String },
+      body: { type: String },
+      correlationId: { type: String }
+    });
+
+    return this.mongooseConnection.model<INote>('Note', NoteSchema);
+  }
+}
