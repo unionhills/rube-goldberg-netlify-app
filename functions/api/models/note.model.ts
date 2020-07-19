@@ -9,18 +9,18 @@
  */
 
 export class Note {
-  constructor() {
-    this.trace = new Array<string>();
-  }
+    constructor() {
+        this.trace = new Array<string>();
+    }
 
-  id: string;
+    id: string;
 
-  subject: string;
-  body: string;
+    subject: string;
+    body: string;
 
-  correlationId: string;
-  trace: Array<string>;
-  createdAt: Date;
-  updatedAt: Date;
-  isDeleted: boolean;
+    correlationId: string;
+    trace: Array<string>;
+    createdAt: Date;
+    updatedAt: Date;
+    isDeleted: boolean;
 }

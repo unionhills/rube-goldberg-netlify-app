@@ -10,25 +10,25 @@ import { NoteRepository } from '../repos';
  */
 
 export class NoteService {
-  constructor(private readonly noteRepo = new NoteRepository()) { }
+    constructor(private readonly noteRepo = new NoteRepository()) {}
 
-  public getNotes(): Note[] {
-    return this.noteRepo.findAll();
-  }
+    public getNotes(): Note[] {
+        return this.noteRepo.findAll();
+    }
 
-  public getNote(id: string): Note {
-    return this.noteRepo.findById(id);
-  }
+    public getNote(id: string): Note {
+        return this.noteRepo.findById(id);
+    }
 
-  public createNote(newNote: Note): Note {
-    return this.noteRepo.create(newNote);
-  }
+    public createNote(newNote: Note): Note {
+        return this.noteRepo.create(newNote);
+    }
 
-  public updateNote(noteId: string, note: Note): Note {
-    return this.noteRepo.update(noteId, note);
-  }
+    public updateNote(noteId: string, note: Note): Note {
+        return this.noteRepo.update(noteId, note);
+    }
 
-  public deleteNote(noteId: string): void {
-    this.noteRepo.delete(noteId);
-  }
+    public deleteNote(noteId: string): void {
+        this.noteRepo.delete(noteId);
+    }
 }

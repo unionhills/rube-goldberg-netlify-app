@@ -1,22 +1,36 @@
-import { Mongoose, Schema, Document, Error } from 'mongoose';
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
 export interface INote extends Document {
-  subject: string;
-  body: string;
-  correlationId: string;
+    subject: string;
+    body: string;
+    correlationId: string;
 }
 
 export class NoteMongoRepository {
-  constructor(private mongooseConnection: Mongoose) {
-  }
+    readonly model: Model<INote>;
 
-  public model() {
-    const NoteSchema: Schema = new Schema({
-      subject: { type: String },
-      body: { type: String },
-      correlationId: { type: String }
-    });
+    constructor() {
+        this.model = this.createModel();
+    }
 
-    return this.mongooseConnection.model<INote>('Note', NoteSchema);
-  }
+    private createModel(): Model<INote> {
+        const NoteSchema: Schema = new Schema({
+            subject: { type: String },
+            body: { type: String },
+            correlationId: { type: String }
+        });
+
+        return mongoose.model<INote>('Note', NoteSchema);
+    }
+
+    public async findAll() {
+        try {
+            const docs = await this.model.find({}).exec();
+
+            console.log(`docs=\n${docs}`);
+            return docs;
+        } catch (err) {
+            err.stack;
+        }
+    }
 }
