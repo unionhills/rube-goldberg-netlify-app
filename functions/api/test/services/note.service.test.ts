@@ -1,5 +1,17 @@
 import { Note } from '../../models';
 import { NoteService } from '../../services';
+import { MongooseConnector } from '../../mongoose.connector'
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+beforeAll(async () => {
+    await MongooseConnector.connect();
+});
+
+afterAll(async () => {
+    await MongooseConnector.disconnect();
+});
 
 describe("Let's try testing the repo", () => {
     test('Check to see if we get records back from the NoteService', () => {
@@ -8,6 +20,23 @@ describe("Let's try testing the repo", () => {
 
         expect(notes).toBeDefined();
         expect(notes.length).toBeGreaterThan(0);
+    });
+});
+
+describe("Let's try testing the repo", () => {
+    test('Check to see if we get records back from the NoteService using our async call', async () => {
+        const noteSvc: NoteService = new NoteService();
+
+        try {
+            const notes: Note[] = await noteSvc.getNotesAsync();
+
+            expect(notes).toBeDefined();
+            expect(notes.length).toBeGreaterThan(0);
+    
+            console.log(`notes=\n${JSON.stringify(notes)}`);
+        } catch (err) {
+            err.stack;
+        }
     });
 });
 

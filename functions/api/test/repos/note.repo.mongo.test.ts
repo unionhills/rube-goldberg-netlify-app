@@ -15,7 +15,7 @@ afterAll(async () => {
 
 describe("Let's see if we can retrieve the contents of the repo", () => {
     test('Check to see if we get records back from the NoteRepository', async () => {
-        const noteMongoRepo: NoteMongoRepository = new NoteMongoRepository();
+        const noteMongoRepo: NoteMongoRepository = NoteMongoRepository.getInstance();
 
         const noteModel: Model<INote> = noteMongoRepo.model;
 

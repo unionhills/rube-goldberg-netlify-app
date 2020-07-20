@@ -1,5 +1,5 @@
 import { Note } from '../models';
-import { NoteRepository } from '../repos';
+import { INote, NoteRepository, NoteMongoRepository } from '../repos';
 
 /**
  * This class represents a business service for managing Notes.
@@ -10,10 +10,36 @@ import { NoteRepository } from '../repos';
  */
 
 export class NoteService {
-    constructor(private readonly noteRepo = new NoteRepository()) {}
+    constructor(
+        private noteRepo: NoteRepository = new NoteRepository(),
+        private noteMongoRepo: NoteMongoRepository = NoteMongoRepository.getInstance()
+    ) {}
 
     public getNotes(): Note[] {
         return this.noteRepo.findAll();
+    }
+
+    public async getNotesAsync(): Promise<Note[]> {
+        const notes: Note[] = [];
+
+        try {
+            const docs: INote[] = await this.noteMongoRepo.findAll();
+
+            const notes: Note[] = docs.map((doc): Note => {
+                const note = new Note();
+
+                note.id = doc._id;
+                note.subject = doc.subject;
+                note.body = doc.body;
+                note.correlationId = doc.correlationId;
+
+                return note;
+            });
+
+            return notes;
+        } catch (err) {
+            err.stack;
+        }
     }
 
     public getNote(id: string): Note {

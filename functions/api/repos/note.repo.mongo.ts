@@ -7,10 +7,19 @@ export interface INote extends Document {
 }
 
 export class NoteMongoRepository {
+    private static instance: NoteMongoRepository;
     readonly model: Model<INote>;
 
-    constructor() {
+    private constructor() {
         this.model = this.createModel();
+    }
+
+    public static getInstance(): NoteMongoRepository {
+        if (!NoteMongoRepository.instance) {
+            NoteMongoRepository.instance = new NoteMongoRepository();
+        }
+    
+        return NoteMongoRepository.instance;
     }
 
     private createModel(): Model<INote> {
@@ -23,7 +32,7 @@ export class NoteMongoRepository {
         return mongoose.model<INote>('Note', NoteSchema);
     }
 
-    public async findAll() {
+    public async findAll(): Promise<INote[]> {
         try {
             const docs = await this.model.find({}).exec();
 
