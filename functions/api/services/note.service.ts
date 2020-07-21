@@ -15,17 +15,40 @@ export class NoteService {
         private noteMongoRepo: NoteMongoRepository = NoteMongoRepository.getInstance()
     ) {}
 
-    public getNotes(): Note[] {
-        return this.noteRepo.findAll();
+    public async getNotes(): Promise<Note[]> {
+        return await this.noteRepo.findAll();
     }
 
-    public async getNotesAsync(): Promise<Note[]> {
-        const notes: Note[] = [];
-
+    public async getNotesFromMongo(): Promise<Note[]> {
         try {
             const docs: INote[] = await this.noteMongoRepo.findAll();
+            const notes: Note[] = this.mapNotes(docs);
 
-            const notes: Note[] = docs.map((doc): Note => {
+            return notes;
+        } catch (err) {
+            console.error(err.stack);
+        }
+    }
+
+    public async getNote(id: string): Promise<Note> {
+        return await this.noteRepo.findById(id);
+    }
+
+    public async createNote(newNote: Note): Promise<Note> {
+        return await this.noteRepo.create(newNote);
+    }
+
+    public async updateNote(noteId: string, note: Note): Promise<Note> {
+        return await this.noteRepo.update(noteId, note);
+    }
+
+    public async deleteNote(noteId: string) {
+        await this.noteRepo.delete(noteId);
+    }
+
+    private mapNotes(docs: INote[]): Note[] {
+        const notes: Note[] = docs.map(
+            (doc): Note => {
                 const note = new Note();
 
                 note.id = doc._id;
@@ -34,27 +57,9 @@ export class NoteService {
                 note.correlationId = doc.correlationId;
 
                 return note;
-            });
+            }
+        );
 
-            return notes;
-        } catch (err) {
-            err.stack;
-        }
-    }
-
-    public getNote(id: string): Note {
-        return this.noteRepo.findById(id);
-    }
-
-    public createNote(newNote: Note): Note {
-        return this.noteRepo.create(newNote);
-    }
-
-    public updateNote(noteId: string, note: Note): Note {
-        return this.noteRepo.update(noteId, note);
-    }
-
-    public deleteNote(noteId: string): void {
-        this.noteRepo.delete(noteId);
+        return notes;
     }
 }

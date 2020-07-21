@@ -2,8 +2,11 @@ import mongoose, { Mongoose } from 'mongoose';
 
 export class MongooseConnector {
     public static async connect() {
-        const uri: string = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@`
-                                        + `${process.env.DB_HOST}/${process.env.DB_NAME}`;
+        const uri: string =
+            `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@` +
+            `${process.env.DB_HOST}/${process.env.DB_NAME}`;
+
+        if (mongoose.connection.readyState === 1) return;
 
         try {
             const connectOptions = {
@@ -19,7 +22,6 @@ export class MongooseConnector {
 
             await mongoose.connect(uri, connectOptions);
             console.log('Successfully connected to MongoDB Atlas');
-
         } catch (error) {
             console.error(error);
         }

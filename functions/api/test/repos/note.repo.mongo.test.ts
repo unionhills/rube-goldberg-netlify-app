@@ -1,6 +1,6 @@
 import { INote, NoteMongoRepository } from '../../repos/note.repo.mongo';
 import mongoose, { Model } from 'mongoose';
-import { MongooseConnector } from '../../mongoose.connector'
+import { MongooseConnector } from '../../mongoose.connector';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -27,7 +27,7 @@ describe("Let's see if we can retrieve the contents of the repo", () => {
 
             console.log(`docs=\n${docs}`);
         } catch (err) {
-            err.stack;
+            console.error(err.stack);
         }
     });
 });

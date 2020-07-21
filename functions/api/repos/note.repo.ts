@@ -31,15 +31,16 @@ export class NoteRepository {
         }
     }
 
-    public findAll(): Note[] {
+    public async findAll(): Promise<Note[]> {
         return this.noteDb;
     }
 
-    public findById(id: string): Note {
-        return this.noteDb.find(note => note.id === id);
+    public async findById(id: string): Promise<Note> {
+        const note = this.noteDb.find(note => note.id === id);
+        return note;
     }
 
-    public create(newNote: Note): Note {
+    public async create(newNote: Note): Promise<Note> {
         newNote.id = '11';
         newNote.correlationId = '11';
 
@@ -54,8 +55,8 @@ export class NoteRepository {
         return newNote;
     }
 
-    public update(noteId: string, note: Note): Note {
-        const noteToUpdate = this.findById(noteId);
+    public async update(noteId: string, note: Note): Promise<Note> {
+        const noteToUpdate = await this.findById(noteId);
 
         noteToUpdate.subject = note.subject;
         noteToUpdate.body = note.body;
@@ -65,7 +66,7 @@ export class NoteRepository {
         return noteToUpdate;
     }
 
-    public delete(noteId: string): void {
+    public async delete(noteId: string) {
         this.noteDb = this.noteDb.filter(note => note.id !== noteId);
     }
 }

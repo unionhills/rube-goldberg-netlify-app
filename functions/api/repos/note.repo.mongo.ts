@@ -18,7 +18,7 @@ export class NoteMongoRepository {
         if (!NoteMongoRepository.instance) {
             NoteMongoRepository.instance = new NoteMongoRepository();
         }
-    
+
         return NoteMongoRepository.instance;
     }
 
