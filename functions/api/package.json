@@ -1,7 +1,9 @@
 {
   "scripts": {
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "test:unit": "jest --group=unit",
+    "test:integration": "jest --group=integration"
   },
   "dependencies": {
     "@overnightjs/core": "^1.6.12",
@@ -19,6 +21,7 @@
     "@types/node": "^13.5.0",
     "jest": "^26.0.1",
     "jest-express": "^1.12.0",
+    "jest-runner-groups": "^2.0.1",
     "ts-jest": "^26.0.0"
   }
 }

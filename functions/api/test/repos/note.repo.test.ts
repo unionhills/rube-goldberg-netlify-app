@@ -1,6 +1,13 @@
 import { Note } from '../../models';
 import { NoteRepository } from '../../repos';
 
+/**
+ * Tests NoteRepository class
+ * 
+ * @group unit/classes/NoteRepository
+ * 
+ */
+
 describe("Let's try testing the repo", () => {
     test('Check to see if we get records back from the NoteRepository', async () => {
         const noteRepo: NoteRepository = new NoteRepository();

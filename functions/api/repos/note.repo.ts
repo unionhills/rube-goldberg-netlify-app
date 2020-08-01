@@ -1,4 +1,5 @@
 import { Note } from '../models';
+import { IRepository } from '.';
 
 /**
  * This class handles the CRUD operations to our persistence store
@@ -9,7 +10,7 @@ import { Note } from '../models';
  *
  */
 
-export class NoteRepository {
+export class NoteRepository implements IRepository<Note> {
     constructor(private noteDb: Note[] = new Array<Note>()) {
         this.fillWithSampleData();
     }

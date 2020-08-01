@@ -3,6 +3,13 @@ import mongoose, { Model } from 'mongoose';
 import { MongooseConnector } from '../../mongoose.connector';
 import dotenv from 'dotenv';
 
+/**
+ * Tests NoteMongoRepository class
+ * 
+ * @group integration/classes/NoteMongoRepository
+ * 
+ */
+
 dotenv.config();
 
 beforeAll(async () => {

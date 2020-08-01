@@ -3,6 +3,13 @@ import { NoteService } from '../../services';
 import { MongooseConnector } from '../../mongoose.connector';
 import dotenv from 'dotenv';
 
+/**
+ * Tests NoteService class
+ * 
+ * @group integration/classes/NoteService
+ * 
+ */
+
 dotenv.config();
 
 beforeAll(async () => {
