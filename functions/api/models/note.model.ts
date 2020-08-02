@@ -1,3 +1,5 @@
+import { INote } from '../shared';
+
 /**
  * This class represents the concept of a Message in
  * our application.  A Message simply contains a
@@ -8,7 +10,7 @@
  *
  */
 
-export class Note {
+export class Note implements INote {
     constructor() {
         this.trace = new Array<string>();
     }

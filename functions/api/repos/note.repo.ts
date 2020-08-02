@@ -1,3 +1,4 @@
+import { INote } from '../shared';
 import { Note } from '../models';
 import { IRepository } from '.';
 
@@ -10,7 +11,7 @@ import { IRepository } from '.';
  *
  */
 
-export class NoteRepository implements IRepository<Note> {
+export class NoteRepository implements IRepository<Note, INote> {
     constructor(private noteDb: Note[] = new Array<Note>()) {
         this.fillWithSampleData();
     }

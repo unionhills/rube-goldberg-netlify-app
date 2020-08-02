@@ -1,15 +1,16 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 import { IRepository } from '.';
+import { INote } from '../shared';
 
-export interface INote extends Document {
+export interface INoteDocument extends INote, Document {
     subject: string;
     body: string;
     correlationId: string;
 }
 
-export class NoteMongoRepository implements IRepository<INote> {
+export class NoteMongoRepository implements IRepository<INoteDocument, INote> {
     private static instance: NoteMongoRepository;
-    readonly model: Model<INote>;
+    readonly model: Model<INoteDocument>;
 
     private constructor() {
         this.model = this.createModel();
@@ -23,17 +24,17 @@ export class NoteMongoRepository implements IRepository<INote> {
         return NoteMongoRepository.instance;
     }
 
-    private createModel(): Model<INote> {
+    private createModel(): Model<INoteDocument> {
         const NoteSchema: Schema = new Schema({
             subject: { type: String },
             body: { type: String },
             correlationId: { type: String }
         }, { timestamps: {} });
 
-        return mongoose.model<INote>('Note', NoteSchema);
+        return mongoose.model<INoteDocument>('Note', NoteSchema);
     }
 
-    public async findAll(): Promise<INote[]> {
+    public async findAll(): Promise<INoteDocument[]> {
         try {
             const docs = await this.model.find({}).exec();
 
@@ -44,7 +45,7 @@ export class NoteMongoRepository implements IRepository<INote> {
         }
     }
 
-    public async findById(id: string): Promise<INote> {
+    public async findById(id: string): Promise<INoteDocument> {
         try {
             const doc = await this.model.findById(id).exec();
 
@@ -55,7 +56,7 @@ export class NoteMongoRepository implements IRepository<INote> {
         }
     }
 
-    public async create(newNote: INote): Promise<INote> {
+    public async create(newNote: INote): Promise<INoteDocument> {
         try {
             const doc = await this.model.create(newNote);
 
@@ -66,7 +67,7 @@ export class NoteMongoRepository implements IRepository<INote> {
         }
     }
 
-    public async update(id: string, note: INote): Promise<INote> {
+    public async update(id: string, note: INote): Promise<INoteDocument> {
         try {
             const doc = await this.model.findByIdAndUpdate(id, note);
 
@@ -77,7 +78,7 @@ export class NoteMongoRepository implements IRepository<INote> {
         }
     }
 
-    public async delete(id: string): Promise<INote> {
+    public async delete(id: string): Promise<INoteDocument> {
         try {
             const doc = await this.model.findByIdAndDelete(id).exec();
 

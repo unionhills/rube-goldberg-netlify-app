@@ -1,8 +1,8 @@
-export interface IRepository<T>
+export interface IRepository<T, K>
 {
     findAll(): Promise<T[]>;
     findById(id: any): Promise<T>;
-    create(newItem: T): Promise<T>;
-    update(itemId: any, item: T): Promise<T>;
+    create(newItem: K): Promise<T>;
+    update(itemId: any, item: K): Promise<T>;
     delete(itemId: any);
 }

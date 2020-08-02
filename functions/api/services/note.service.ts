@@ -1,5 +1,5 @@
 import { Note } from '../models';
-import { INote, NoteRepository, NoteMongoRepository } from '../repos';
+import { INoteDocument, NoteRepository, NoteMongoRepository } from '../repos';
 
 /**
  * This class represents a business service for managing Notes.
@@ -21,7 +21,7 @@ export class NoteService {
 
     public async getNotesFromMongo(): Promise<Note[]> {
         try {
-            const docs: INote[] = await this.noteMongoRepo.findAll();
+            const docs: INoteDocument[] = await this.noteMongoRepo.findAll();
             const notes: Note[] = this.mapNotes(docs);
 
             return notes;
@@ -46,7 +46,7 @@ export class NoteService {
         await this.noteRepo.delete(noteId);
     }
 
-    private mapNotes(docs: INote[]): Note[] {
+    private mapNotes(docs: INoteDocument[]): Note[] {
         const notes: Note[] = docs.map(
             (doc): Note => {
                 const note = new Note();
