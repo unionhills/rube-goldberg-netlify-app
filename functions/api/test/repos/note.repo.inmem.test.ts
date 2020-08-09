@@ -1,16 +1,16 @@
 import { Note } from '../../models';
-import { NoteRepository } from '../../repos';
+import { InMemoryNoteRepository } from '../../repos';
 
 /**
- * Tests NoteRepository class
+ * Tests InMemoryNoteRepository class
  * 
- * @group unit/classes/NoteRepository
+ * @group unit/classes/InMemoryNoteRepository
  * 
  */
 
 describe("Let's try testing the repo", () => {
-    test('Check to see if we get records back from the NoteRepository', async () => {
-        const noteRepo: NoteRepository = new NoteRepository();
+    test('Check to see if we get records back from the InMemoryNoteRepository', async () => {
+        const noteRepo: InMemoryNoteRepository = new InMemoryNoteRepository();
         const notes: Note[] = await noteRepo.findAll();
 
         expect(notes).toBeDefined();
@@ -19,8 +19,8 @@ describe("Let's try testing the repo", () => {
 });
 
 describe('Test create operation', () => {
-    test('Check to see if we can add a new note to the NoteRepository', async () => {
-        const noteRepo: NoteRepository = new NoteRepository();
+    test('Check to see if we can add a new note to the InMemoryNoteRepository', async () => {
+        const noteRepo: InMemoryNoteRepository = new InMemoryNoteRepository();
         let notes: Note[] = await noteRepo.findAll();
         const recordCount = notes.length;
         const newNote: Note = new Note();
@@ -35,13 +35,13 @@ describe('Test create operation', () => {
 });
 
 describe('Test repo update operation', () => {
-    test('Check to if we can update a note properly in the NoteRepository', async () => {
-        const noteRepo: NoteRepository = new NoteRepository();
+    test('Check to if we can update a note properly in the InMemoryNoteRepository', async () => {
+        const noteRepo: InMemoryNoteRepository = new InMemoryNoteRepository();
         const newBody: string = 'This is the new body content';
         let note: Note = await noteRepo.findById('1');
 
         note.body = newBody;
-        await noteRepo.update(note.id, note);
+        await noteRepo.update(note.getId(), note);
         note = await noteRepo.findById('1');
 
         expect(note.body).toEqual(newBody);
@@ -49,8 +49,8 @@ describe('Test repo update operation', () => {
 });
 
 describe('Test repo delete operation', () => {
-    test('Check to if we can delete a note properly in the NoteRepository', async () => {
-        const noteRepo: NoteRepository = new NoteRepository();
+    test('Check to if we can delete a note properly in the InMemoryNoteRepository', async () => {
+        const noteRepo: InMemoryNoteRepository = new InMemoryNoteRepository();
 
         await noteRepo.delete('1');
         const note: Note = await noteRepo.findById('1');

@@ -8,20 +8,20 @@ export interface INoteDocument extends INote, Document {
     correlationId: string;
 }
 
-export class NoteMongoRepository implements IRepository<INoteDocument, INote> {
-    private static instance: NoteMongoRepository;
+export class MongoNoteRepository implements IRepository<INoteDocument, INote> {
+    private static instance: MongoNoteRepository;
     readonly model: Model<INoteDocument>;
 
     private constructor() {
         this.model = this.createModel();
     }
 
-    public static getInstance(): NoteMongoRepository {
-        if (!NoteMongoRepository.instance) {
-            NoteMongoRepository.instance = new NoteMongoRepository();
+    public static getInstance(): MongoNoteRepository {
+        if (!MongoNoteRepository.instance) {
+            MongoNoteRepository.instance = new MongoNoteRepository();
         }
 
-        return NoteMongoRepository.instance;
+        return MongoNoteRepository.instance;
     }
 
     private createModel(): Model<INoteDocument> {
@@ -31,6 +31,9 @@ export class NoteMongoRepository implements IRepository<INoteDocument, INote> {
             correlationId: { type: String }
         }, { timestamps: {} });
 
+        NoteSchema.methods.getId = function() {
+            return this.id;
+        }
         return mongoose.model<INoteDocument>('Note', NoteSchema);
     }
 

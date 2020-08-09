@@ -11,11 +11,20 @@ import { INote } from '../shared';
  */
 
 export class Note implements INote {
-    constructor() {
+    constructor(id?: string) {
+        this._id = id;
         this.trace = new Array<string>();
     }
 
-    id: string;
+    private _id: string;
+
+    public getId(): string {
+        return this._id;
+    }
+
+    public setId(value: string) {
+        this._id = value;
+    }
 
     subject: string;
     body: string;

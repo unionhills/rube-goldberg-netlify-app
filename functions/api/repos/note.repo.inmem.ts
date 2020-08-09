@@ -11,7 +11,7 @@ import { IRepository } from '.';
  *
  */
 
-export class NoteRepository implements IRepository<Note, INote> {
+export class InMemoryNoteRepository implements IRepository<Note, INote> {
     constructor(private noteDb: Note[] = new Array<Note>()) {
         this.fillWithSampleData();
     }
@@ -19,17 +19,17 @@ export class NoteRepository implements IRepository<Note, INote> {
     private fillWithSampleData() {
         for (let i: number = 0; i < 10; i++) {
             const noteId: string = (i + 1).toString();
+            const newNote = new Note(noteId);
 
-            this.noteDb.push({
-                id: noteId,
-                correlationId: noteId,
-                subject: `Sample Note ${noteId}`,
-                body: `This is the body of sample note ${noteId}.`,
-                trace: [`New note ${noteId} persisted to database`],
-                createdAt: new Date(),
-                updatedAt: new Date(),
-                isDeleted: false
-            });
+            newNote.correlationId = noteId;
+            newNote.subject = `Sample Note ${noteId}`;
+            newNote.body = `This is the body of sample note ${noteId}.`;
+            newNote.trace = [`New note ${noteId} persisted to database`];
+            newNote.createdAt = new Date();
+            newNote.updatedAt = new Date();
+            newNote.isDeleted = false;
+
+            this.noteDb.push(newNote);
         }
     }
 
@@ -38,12 +38,12 @@ export class NoteRepository implements IRepository<Note, INote> {
     }
 
     public async findById(id: string): Promise<Note> {
-        const note = this.noteDb.find(note => note.id === id);
+        const note = this.noteDb.find(note => note.getId() === id);
         return note;
     }
 
     public async create(newNote: Note): Promise<Note> {
-        newNote.id = '11';
+        newNote.setId('11');
         newNote.correlationId = '11';
 
         newNote.createdAt = new Date();
@@ -69,6 +69,6 @@ export class NoteRepository implements IRepository<Note, INote> {
     }
 
     public async delete(noteId: string) {
-        this.noteDb = this.noteDb.filter(note => note.id !== noteId);
+        this.noteDb = this.noteDb.filter(note => note.getId() !== noteId);
     }
 }

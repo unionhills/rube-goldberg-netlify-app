@@ -1,4 +1,4 @@
-import { Note } from '../../..//models';
+import { Note } from '../../../models';
 
 /**
  * Tests Note class
@@ -9,9 +9,8 @@ import { Note } from '../../..//models';
 
 describe('This is a simple test of the note model', () => {
     test('Check to see if imports are working', () => {
-        const note: Note = new Note();
+        const note: Note = new Note('1');
 
-        note.id = '1';
-        expect(note.id).toEqual('1');
+        expect(note.getId()).toEqual('1');
     });
 });

@@ -1,5 +1,6 @@
+import { INote } from '../shared';
 import { Note } from '../models';
-import { INoteDocument, NoteRepository, NoteMongoRepository } from '../repos';
+import { IRepository, INoteDocument, InMemoryNoteRepository, MongoNoteRepository } from '../repos';
 
 /**
  * This class represents a business service for managing Notes.
@@ -11,14 +12,13 @@ import { INoteDocument, NoteRepository, NoteMongoRepository } from '../repos';
 
 export class NoteService {
     constructor(
-        private noteRepo: NoteRepository = new NoteRepository(),
-        private noteMongoRepo: NoteMongoRepository = NoteMongoRepository.getInstance()
+        private noteRepo: IRepository<INote, INote> = new InMemoryNoteRepository(),
     ) {}
 
-    public async getNotes(): Promise<Note[]> {
+    public async getNotes(): Promise<INote[]> {
         return await this.noteRepo.findAll();
     }
-
+/*
     public async getNotesFromMongo(): Promise<Note[]> {
         try {
             const docs: INoteDocument[] = await this.noteMongoRepo.findAll();
@@ -29,16 +29,16 @@ export class NoteService {
             console.error(err.stack);
         }
     }
-
-    public async getNote(id: string): Promise<Note> {
+*/
+    public async getNote(id: string): Promise<INote> {
         return await this.noteRepo.findById(id);
     }
 
-    public async createNote(newNote: Note): Promise<Note> {
+    public async createNote(newNote: Note): Promise<INote> {
         return await this.noteRepo.create(newNote);
     }
 
-    public async updateNote(noteId: string, note: Note): Promise<Note> {
+    public async updateNote(noteId: string, note: Note): Promise<INote> {
         return await this.noteRepo.update(noteId, note);
     }
 
@@ -49,9 +49,8 @@ export class NoteService {
     private mapNotes(docs: INoteDocument[]): Note[] {
         const notes: Note[] = docs.map(
             (doc): Note => {
-                const note = new Note();
+                const note = new Note(doc._id);
 
-                note.id = doc._id;
                 note.subject = doc.subject;
                 note.body = doc.body;
                 note.correlationId = doc.correlationId;

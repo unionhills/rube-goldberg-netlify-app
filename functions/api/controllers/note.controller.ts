@@ -3,6 +3,7 @@ import { Controller, Get, Put, Post, Delete } from '@overnightjs/core';
 import { OK, BAD_REQUEST } from 'http-status-codes';
 import { Logger } from '@overnightjs/logger';
 import { Note } from '../models';
+import { INote } from '../shared';
 import { NoteService } from '../services/note.service';
 
 @Controller('.netlify/functions/api/notes')
@@ -12,7 +13,7 @@ export class NoteController {
     @Get()
     private async getNotes(req: Request, res: Response): Promise<Response> {
         try {
-            const notes: Note[] = await this.noteSvc.getNotes();
+            const notes: INote[] = await this.noteSvc.getNotes();
 
             return res.json(notes);
         } catch (err) {
@@ -26,7 +27,7 @@ export class NoteController {
             Logger.Info(req.params.id);
 
             const noteId: string = req.params.id;
-            const note: Note = await this.noteSvc.getNote(noteId);
+            const note: INote = await this.noteSvc.getNote(noteId);
 
             return res.status(200).json(note);
         } catch (err) {
