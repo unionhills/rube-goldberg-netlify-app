@@ -6,7 +6,7 @@
     "ng": "ng",
     "start": "ng serve",
     "prebuild": "rimraf dist",
-    "build": "npm run build:ui && npm run build:functions && copyfiles \"functions/*/package*.json\" dist",
+    "build": "npm run build:ui && npm run build:functions",
     "postbuild": "netlify-lambda install",
     "test": "npm run test:ui && npm run test:functions",
     "test:ui": "ng test",
@@ -14,7 +14,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "build:ui": "ng build",
-    "build:functions": "tsc -p tsconfig.functions.json",
+    "build:functions": "tsc -p tsconfig.functions.json && copyfiles \"functions/*/package*.json\" dist",
     "format": "prettier --write \"{src,functions}/**/*.ts\""
   },
   "private": true,

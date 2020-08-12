@@ -1,6 +1,7 @@
 import { INote } from '../shared';
 import { Note } from '../models';
 import { IRepository } from '.';
+import { Utils, NoteUtils } from '../shared';
 
 /**
  * This class handles the CRUD operations to our persistence store
@@ -12,19 +13,30 @@ import { IRepository } from '.';
  */
 
 export class InMemoryNoteRepository implements IRepository<Note, INote> {
-    constructor(private noteDb: Note[] = new Array<Note>()) {
+    private static instance: InMemoryNoteRepository;
+    private itemId: number = 0;
+
+    private constructor(private noteDb: Note[] = new Array<Note>()) {
         this.fillWithSampleData();
+    }
+
+    public static getInstance(): InMemoryNoteRepository {
+        if (!InMemoryNoteRepository.instance) {
+            InMemoryNoteRepository.instance = new InMemoryNoteRepository();
+        }
+
+        return InMemoryNoteRepository.instance;
+    }
+
+    private allocateNextId(): string {
+        return (this.itemId++).toString();
     }
 
     private fillWithSampleData() {
         for (let i: number = 0; i < 10; i++) {
-            const noteId: string = (i + 1).toString();
-            const newNote = new Note(noteId);
+            const newNote = NoteUtils.buildRandomNote(this.allocateNextId());
 
-            newNote.correlationId = noteId;
-            newNote.subject = `Sample Note ${noteId}`;
-            newNote.body = `This is the body of sample note ${noteId}.`;
-            newNote.trace = [`New note ${noteId} persisted to database`];
+            newNote.trace = [`New note ${newNote.getId()} persisted to database`];
             newNote.createdAt = new Date();
             newNote.updatedAt = new Date();
             newNote.isDeleted = false;
@@ -43,8 +55,7 @@ export class InMemoryNoteRepository implements IRepository<Note, INote> {
     }
 
     public async create(newNote: Note): Promise<Note> {
-        newNote.setId('11');
-        newNote.correlationId = '11';
+        newNote.setId(this.allocateNextId());
 
         newNote.createdAt = new Date();
         newNote.updatedAt = new Date();

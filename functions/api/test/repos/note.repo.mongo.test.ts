@@ -5,7 +5,7 @@ import {
 import { INote } from '../../shared';
 import { Note } from '../../models';
 import { MongooseConnector } from '../../mongoose.connector';
-import { Utils } from '../shared/utils';
+import { Utils } from '../../shared/utils';
 import dotenv from 'dotenv';
 
 /**

@@ -12,7 +12,7 @@ import { IRepository, INoteDocument, InMemoryNoteRepository, MongoNoteRepository
 
 export class NoteService {
     constructor(
-        private noteRepo: IRepository<INote, INote> = new InMemoryNoteRepository(),
+        private noteRepo: IRepository<INote, INote> = InMemoryNoteRepository.getInstance(),
     ) {}
 
     public async getNotes(): Promise<INote[]> {

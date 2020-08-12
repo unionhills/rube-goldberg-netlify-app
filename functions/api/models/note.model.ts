@@ -16,6 +16,16 @@ export class Note implements INote {
         this.trace = new Array<string>();
     }
 
+    public static fromINote(iNote: INote): Note {
+        const note: Note = new this(iNote.getId());
+
+        note.subject = iNote.subject;
+        note.body = iNote.body;
+        note.correlationId = iNote.correlationId;
+
+        return note;
+    }
+
     private _id: string;
 
     public getId(): string {

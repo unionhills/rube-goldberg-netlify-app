@@ -2,6 +2,7 @@ import { Note } from '../../models';
 import { INote } from '../../shared';
 import { NoteService } from '../../services';
 import { MongooseConnector } from '../../mongoose.connector';
+import { NoteUtils, Utils } from '../../shared';
 import dotenv from 'dotenv';
 
 /**
@@ -22,16 +23,6 @@ afterAll(async () => {
 });
 
 describe("Let's try testing the repo", () => {
-    test('Check to see if we get records back from the NoteService', async () => {
-        const noteSvc: NoteService = new NoteService();
-        const notes: INote[] = await noteSvc.getNotes();
-
-        expect(notes).toBeDefined();
-        expect(notes.length).toBeGreaterThan(0);
-    });
-});
-
-describe("Let's try testing the repo", () => {
     test('Check to see if we get records back from the NoteService using our async call', async () => {
         const noteSvc: NoteService = new NoteService();
 
@@ -48,14 +39,17 @@ describe("Let's try testing the repo", () => {
     });
 });
 
-describe('Test get operation', () => {
+describe('Test create operation', () => {
     test('Check to see if we can add a new note to the NoteService', async () => {
         const noteSvc: NoteService = new NoteService();
         let notes: INote[] = await noteSvc.getNotes();
         const recordCount = notes.length;
         const newNote: Note = new Note();
 
-        newNote.body = 'This is a test note';
+        newNote.subject =  `Subject - ${Utils.randomAlphaString(128)}`;
+        newNote.body = `Body - ${Utils.randomAlphaString(256)}`;
+        newNote.correlationId = `${Utils.uuidv4()}`;
+
         await noteSvc.createNote(newNote);
 
         notes = await noteSvc.getNotes();
@@ -66,28 +60,39 @@ describe('Test get operation', () => {
 describe('Test repo update operation', () => {
     test('Check to if we can update a note properly in the NoteService', async () => {
         const noteSvc: NoteService = new NoteService();
-        const newBody: string = 'This is the new body content';
-        let note: INote = await noteSvc.getNote('1');
-
-        const updatedNote = new Note(note.getId());
-        updatedNote.subject = note.subject;
-        updatedNote.body = newBody;
-        updatedNote.correlationId = note.correlationId;
+        const note: Note = new Note();
     
-        await noteSvc.updateNote(note.getId(), updatedNote);
-        note = await noteSvc.getNote('1');
+        note.subject =  `Subject - ${Utils.randomAlphaString(128)}`;
+        note.body = `Body - ${Utils.randomAlphaString(256)}`;
+        note.correlationId = `${Utils.uuidv4()}`;
 
-        expect(note.body).toEqual(newBody);
+        const createdNote: INote = await noteSvc.createNote(note);
+
+        const noteToUpdate: Note = Note.fromINote(createdNote);
+        const updatedBody: string = `Updated Body - ${Utils.randomAlphaString(256)}`;
+        noteToUpdate.body = updatedBody;
+
+        await noteSvc.updateNote(noteToUpdate.getId(), noteToUpdate);
+        const updatedNote: INote = await noteSvc.getNote(noteToUpdate.getId());
+
+        expect(updatedNote.body).toEqual(updatedBody);
     });
 });
 
 describe('Test repo delete operation', () => {
     test('Check to if we can delete a note properly in the NoteService', async () => {
         const noteSvc: NoteService = new NoteService();
+        const note: Note = new Note();
+    
+        note.subject =  `Subject - ${Utils.randomAlphaString(128)}`;
+        note.body = `Body - ${Utils.randomAlphaString(256)}`;
+        note.correlationId = `${Utils.uuidv4()}`;
 
-        await noteSvc.deleteNote('1');
-        const note: INote = await noteSvc.getNote('1');
+        const createdNote: INote = await noteSvc.createNote(note);
 
-        expect(note).toBeUndefined();
+        await noteSvc.deleteNote(createdNote.getId());
+        const deletedNote: INote = await noteSvc.getNote(createdNote.getId());
+
+        expect(deletedNote).toBeFalsy();
     });
 });
