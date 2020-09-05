@@ -1,0 +1,51 @@
+<header class="page-header">
+    <div class="container-fluid">
+        <h2 class="no-margin-bottom">Notes</h2>
+    </div>
+</header>
+
+<div class="container-fluid">
+    <p>
+<!--
+      <button class="btn btn-primary" (click)='onNewNote()'>Submit New Note</button>
+-->
+    </p>
+</div>
+
+<div class="container-fluid">
+    <div class="table-responsive">
+        <table class="table table-striped" *ngIf="notes && notes.length">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Id</th>
+                    <th>Note</th>
+                    <th>Correlation Id</th>
+                    <th>Trace</th>
+                    <th>Activity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let note of notes">
+                    <td></td>
+                    <td>{{ note._id }}</td>
+                    <td>
+                        <strong>{{ note.subject }}</strong><br />
+                        {{ note.body }}
+                    </td>
+                    <td>{{ note.correlationId }}</td>
+                    <td>
+                        <div *ngIf="note.trace && note.trace.length">
+                            {{ printTrace(note.trace) }}
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="note.createdAt">
+                            {{ note.createdAt | date: 'medium' }}
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

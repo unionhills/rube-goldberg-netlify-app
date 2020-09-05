@@ -6,7 +6,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeModule } from './home/home.module';
 import { AboutModule } from './about/about.module';
-//import { NotesModule } from './notes/notes.module';
+// We're not importing the notes module since we're experimenting
+// with the lazy loading feature of Angular routing.
+// 
+// import { NotesModule } from './notes/notes.module';
 
 @NgModule({
     declarations: [AppComponent],
