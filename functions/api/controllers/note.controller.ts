@@ -4,11 +4,17 @@ import { OK, BAD_REQUEST } from 'http-status-codes';
 import { Logger } from '@overnightjs/logger';
 import { Note } from '../models';
 import { INote } from '../shared';
-import { NoteService } from '../services/note.service';
+import { NoteService } from '../services';
+import { MongoNoteRepository, InMemoryNoteRepository } from '../repos';
 
 @Controller('.netlify/functions/api/notes')
 export class NoteController {
-    constructor(private readonly noteSvc: NoteService = new NoteService()) {}
+    constructor(
+        private readonly noteSvc: NoteService = new NoteService(
+//          MongoNoteRepository.getInstance()
+            InMemoryNoteRepository.getInstance()
+        )
+    ) {}
 
     @Get()
     private async getNotes(req: Request, res: Response): Promise<Response> {
