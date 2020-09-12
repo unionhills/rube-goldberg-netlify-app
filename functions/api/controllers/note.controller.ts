@@ -11,7 +11,6 @@ import { MongoNoteRepository, InMemoryNoteRepository } from '../repos';
 export class NoteController {
     constructor(
         private readonly noteSvc: NoteService = new NoteService(
-//          MongoNoteRepository.getInstance()
             InMemoryNoteRepository.getInstance()
         )
     ) {}
