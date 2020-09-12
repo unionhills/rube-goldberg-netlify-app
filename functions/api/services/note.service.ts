@@ -1,5 +1,6 @@
-import { Note } from '../shared/models';
-import { NoteRepository } from '../repos';
+import { INote } from '../shared';
+import { Note } from '../models';
+import { IRepository, INoteDocument, InMemoryNoteRepository, MongoNoteRepository } from '../repos';
 
 /**
  * This class represents a business service for managing Notes.
@@ -10,25 +11,54 @@ import { NoteRepository } from '../repos';
  */
 
 export class NoteService {
-  constructor(private readonly noteRepo = new NoteRepository()) { }
+    constructor(
+        private noteRepo: IRepository<INote, INote> = InMemoryNoteRepository.getInstance(),
+    ) {}
 
-  public getNotes(): Note[] {
-    return this.noteRepo.findAll();
-  }
+    public async getNotes(): Promise<INote[]> {
+        return await this.noteRepo.findAll();
+    }
+/*
+    public async getNotesFromMongo(): Promise<Note[]> {
+        try {
+            const docs: INoteDocument[] = await this.noteMongoRepo.findAll();
+            const notes: Note[] = this.mapNotes(docs);
 
-  public getNote(id: string): Note {
-    return this.noteRepo.findById(id);
-  }
+            return notes;
+        } catch (err) {
+            console.error(err.stack);
+        }
+    }
+*/
+    public async getNote(id: string): Promise<INote> {
+        return await this.noteRepo.findById(id);
+    }
 
-  public createNote(newNote: Note): Note {
-    return this.noteRepo.create(newNote);
-  }
+    public async createNote(newNote: Note): Promise<INote> {
+        return await this.noteRepo.create(newNote);
+    }
 
-  public updateNote(noteId: string, note: Note): Note {
-    return this.noteRepo.update(noteId, note);
-  }
+    public async updateNote(noteId: string, note: Note): Promise<INote> {
+        return await this.noteRepo.update(noteId, note);
+    }
 
-  public deleteNote(noteId: string): void {
-    this.noteRepo.delete(noteId);
-  }
+    public async deleteNote(noteId: string) {
+        await this.noteRepo.delete(noteId);
+    }
+
+    private mapNotes(docs: INoteDocument[]): Note[] {
+        const notes: Note[] = docs.map(
+            (doc): Note => {
+                const note = new Note(doc._id);
+
+                note.subject = doc.subject;
+                note.body = doc.body;
+                note.correlationId = doc.correlationId;
+
+                return note;
+            }
+        );
+
+        return notes;
+    }
 }

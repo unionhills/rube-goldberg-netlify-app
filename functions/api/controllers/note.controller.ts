@@ -1,57 +1,81 @@
 import { Request, Response } from 'express';
 import { Controller, Get, Put, Post, Delete } from '@overnightjs/core';
+import { OK, BAD_REQUEST } from 'http-status-codes';
 import { Logger } from '@overnightjs/logger';
-import { Note } from '../shared/models';
-import { NoteService } from '../services/note.service';
+import { Note } from '../models';
+import { INote } from '../shared';
+import { NoteService } from '../services';
+import { MongoNoteRepository, InMemoryNoteRepository } from '../repos';
 
 @Controller('.netlify/functions/api/notes')
 export class NoteController {
-  constructor(private readonly noteSvc: NoteService = new NoteService()) {}
+    constructor(
+        private readonly noteSvc: NoteService = new NoteService(
+//          MongoNoteRepository.getInstance()
+            InMemoryNoteRepository.getInstance()
+        )
+    ) {}
 
-  @Get()
-  public getNotes(req: Request, res: Response) {
-    const notes: Note[] = this.noteSvc.getNotes();
+    @Get()
+    private async getNotes(req: Request, res: Response): Promise<Response> {
+        try {
+            const notes: INote[] = await this.noteSvc.getNotes();
 
-    return res.json(notes);
-  }
+            return res.json(notes);
+        } catch (err) {
+            return this.handleError(err, res);
+        }
+    }
 
-  @Get(':id')
-  private getNote(req: Request, res: Response) {
-    Logger.Info(req.params.id);
+    @Get(':id')
+    private async getNote(req: Request, res: Response): Promise<Response> {
+        try {
+            Logger.Info(req.params.id);
 
-    const noteId: string = req.params.id;
-    const note: Note = this.noteSvc.getNote(noteId);
+            const noteId: string = req.params.id;
+            const note: INote = await this.noteSvc.getNote(noteId);
 
-    return res.status(200).json(note);
-  }
+            return res.status(200).json(note);
+        } catch (err) {
+            return this.handleError(err, res);
+        }
+    }
 
-  @Post()
-  private createNote(req: Request, res: Response) {
-    Logger.Info(`Request Body = ${req.body}`);
+    @Post()
+    private async createNote(req: Request, res: Response): Promise<Response> {
+        Logger.Info(`Request Body = ${req.body}`);
 
-    const note: Note = JSON.parse(req.body);
-    const newNote = this.noteSvc.createNote(note);
+        const note: Note = JSON.parse(req.body);
+        const newNote = await this.noteSvc.createNote(note);
 
-    return res.status(200).json(newNote);
-  }
+        return res.status(200).json(newNote);
+    }
 
-  @Put(':id')
-  private updateNote(req: Request, res: Response) {
-    Logger.Info(req.params.id);
-    Logger.Info(req.body);
+    @Put(':id')
+    private async updateNote(req: Request, res: Response): Promise<Response> {
+        Logger.Info(req.params.id);
+        Logger.Info(req.body);
 
-    const noteId: string = req.params.id;
-    const note: Note = JSON.parse(req.body);
-    const updatedNote = this.noteSvc.updateNote(noteId, note);
+        const noteId: string = req.params.id;
+        const note: Note = JSON.parse(req.body);
+        const updatedNote = await this.noteSvc.updateNote(noteId, note);
 
-    return res.status(200).json(updatedNote);
-  }
+        return res.status(200).json(updatedNote);
+    }
 
-  @Delete(':id')
-  private deleteNote(req: Request, res: Response) {
-    Logger.Info(req.params.id);
-    const noteId: string = req.params.id;
+    @Delete(':id')
+    private async deleteNote(req: Request, res: Response): Promise<Response> {
+        Logger.Info(req.params.id);
+        const noteId: string = req.params.id;
+        await this.noteSvc.deleteNote(noteId);
 
-    return res.status(200).json({ id: noteId });
-  }
+        return res.status(200).json({ id: noteId });
+    }
+
+    private handleError(err, res: Response): Response {
+        Logger.Err(err, true);
+        return res.status(BAD_REQUEST).json({
+            error: err.message
+        });
+    }
 }

@@ -1,12 +1,21 @@
-import { Note } from '../../shared/models';
+import { Note } from '../../models';
 import { NoteController } from '../../controllers';
 
-//import { Request } from 'jest-express/lib/request';
+import { Request } from 'jest-express/lib/request';
+import { Response } from 'jest-express/lib/response';
 
-describe("This is a test of the NoteController", () => {
-  test("Check NoteController instantiation", () => {
-    const noteCtlr: NoteController = new NoteController();
+/**
+ * Tests NoteController class
+ * Will eventually be an integration test when we can figure out how.
+ * 
+ * @group integration/classes/NoteController
+ * 
+ */
 
-    expect(noteCtlr).toBeDefined();
-  });
+describe('This is a simple test of the NoteController', () => {
+    test('Check NoteController instantiation', () => {
+        const noteCtlr: NoteController = new NoteController();
+
+        expect(noteCtlr).toBeDefined();
+    });
 });

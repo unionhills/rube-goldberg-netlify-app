@@ -1,11 +1,16 @@
-import { Note } from '../../../shared/models';
+import { Note } from '../../../models';
 
-describe("This is a simple test of the note model", () => {
-  test("Check to see if imports are working", () => {
-    const note: Note = new Note();
+/**
+ * Tests Note class
+ * 
+ * @group unit/classes/Note
+ * 
+ */
 
-    note.id = "1"
-    expect(note.id).toEqual("1");
-  });
+describe('This is a simple test of the note model', () => {
+    test('Check to see if imports are working', () => {
+        const note: Note = new Note('1');
+
+        expect(note.getId()).toEqual('1');
+    });
 });
-

@@ -18,12 +18,13 @@
     "outDir": "../../dist/functions/api",
     "types": [
       "node",
-      "express"
+      "express",
+      "jest"
     ]
   },
   "include": [
     "**/*.ts",
-    "**/*.json"
+    "**/*.json", "repos/note.repo.inmemts"
   ],
   "exclude": [
     "node_modules",
