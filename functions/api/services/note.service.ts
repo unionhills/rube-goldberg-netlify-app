@@ -54,6 +54,7 @@ export class NoteService {
                 note.subject = doc.subject;
                 note.body = doc.body;
                 note.correlationId = doc.correlationId;
+                note.trace = doc.trace ? [...doc.trace] : undefined;
 
                 return note;
             }

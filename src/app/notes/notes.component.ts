@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 
 import { NoteModelDTO } from './note.model.dto';
+import { NotesService } from './notes.service';
 
 @Component({
     selector: 'app-notes',
@@ -11,15 +12,23 @@ import { NoteModelDTO } from './note.model.dto';
 export class NotesComponent implements OnInit {
     notes: NoteModelDTO[];
 
-    constructor() {
-        this.createSampleData();
+    constructor(private notesService: NotesService) {
+        // this.createSampleData();
     }
 
     ngOnInit(): void {
         this.refresh();
     }
 
-    public refresh() {}
+    public refresh() {
+        this.notesService.getNotes().subscribe(
+            (notes: NoteModelDTO[]) => {
+                this.notes = notes;
+            },
+            (error: any) => console.error(error),
+            () => {}
+        );
+    }
 
     private createSampleData() {
         this.notes = new Array<NoteModelDTO>();
@@ -40,6 +49,6 @@ export class NotesComponent implements OnInit {
     }
 
     public printTrace(trace: string[]): string {
-      return JSON.stringify(trace);
+        return JSON.stringify(trace);
     }
 }
