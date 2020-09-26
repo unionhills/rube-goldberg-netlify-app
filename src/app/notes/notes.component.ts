@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 
+import { Utils } from '../shared';
 import { NoteModelDTO } from './note.model.dto';
 import { NotesService } from './notes.service';
 
@@ -30,25 +31,50 @@ export class NotesComponent implements OnInit {
         );
     }
 
+    private createSampleNote(id?: string): NoteModelDTO {
+        const newNote = new NoteModelDTO();
+
+        if (id) newNote._id = id;
+        newNote.subject = `Subject ${id}`;
+        newNote.body = `This is the body for note ${id}`;
+        newNote.correlationId = `Correlation Id ${id}`;
+        newNote.trace = [`Note ${id} created`];
+
+        return newNote;
+    }
+
     private createSampleData() {
         this.notes = new Array<NoteModelDTO>();
 
         for (let i: number = 0; i < 10; i++) {
-            const newNote = new NoteModelDTO();
             const id = (i + 1).toString();
+            const newNote: NoteModelDTO = this.createSampleNote(id);
 
-            newNote._id = id;
-            newNote.subject = `Subject ${id}`;
-            newNote.body = `This is the body for note ${id}`;
-            newNote.correlationId = `Correlation Id ${id}`;
-            newNote.trace = [`Note ${id} created`];
             newNote.createdAt = new Date();
-
             this.notes.push(newNote);
         }
     }
 
     public printTrace(trace: string[]): string {
         return JSON.stringify(trace);
+    }
+
+    public onNewNote() {
+        const newNote: NoteModelDTO = this.createSampleNote();
+
+        //      newNote._id = Utils.uuidv4();
+        //      newNote.createdAt = new Date();
+        //      this.notes.push(newNote);
+
+        this.notesService.createNote(newNote).subscribe(
+            (note: NoteModelDTO) => {
+                console.log(
+                    'NotesComponent::createNote(): ' + JSON.stringify(note)
+                );
+                this.refresh();
+            },
+            (error: any) => console.log(error),
+            () => {}
+        );
     }
 }

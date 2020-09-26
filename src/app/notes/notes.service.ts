@@ -40,6 +40,21 @@ export class NotesService {
         );
     }
 
+    public createNote(note: NoteModelDTO): Observable<NoteModelDTO> {
+        console.debug(
+          'NotesService::createNote(): ' + JSON.stringify(note)
+        );
+    
+        return this.http
+          .post<NoteModelDTO>(this.serviceUrl, note, this.cudOptions)
+          .pipe(
+            tap(data =>
+              console.debug('createNote(): ' + JSON.stringify(data))
+            ),
+            catchError(this.handleError<any>(`createNote`))
+          );
+      }
+    
     /**
      * Handle Http operation that failed.
      * Let the app continue.
