@@ -42,9 +42,9 @@ export class NoteController {
 
     @Post()
     private async createNote(req: Request, res: Response): Promise<Response> {
-        Logger.Info(`Request Body = ${req.body}`);
+        Logger.Info(`Request Body =\n` + JSON.stringify(req.body));
 
-        const note: Note = JSON.parse(req.body);
+        const note: Note = Note.fromAny(req.body);
         const newNote = await this.noteSvc.createNote(note);
 
         return res.status(200).json(newNote);
@@ -56,7 +56,7 @@ export class NoteController {
         Logger.Info(req.body);
 
         const noteId: string = req.params.id;
-        const note: Note = JSON.parse(req.body);
+        const note: Note = Note.fromAny(req.body);
         const updatedNote = await this.noteSvc.updateNote(noteId, note);
 
         return res.status(200).json(updatedNote);

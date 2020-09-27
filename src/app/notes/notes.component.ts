@@ -32,13 +32,21 @@ export class NotesComponent implements OnInit {
     }
 
     private createSampleNote(id?: string): NoteModelDTO {
-        const newNote = new NoteModelDTO();
+        const newNote:NoteModelDTO = new NoteModelDTO();
+        let context:string = "";
 
-        if (id) newNote._id = id;
-        newNote.subject = `Subject ${id}`;
-        newNote.body = `This is the body for note ${id}`;
-        newNote.correlationId = `Correlation Id ${id}`;
-        newNote.trace = [`Note ${id} created`];
+        if (id) {
+            newNote._id = id;
+            context = id;
+        }
+        else {
+            context = Utils.uuidv4();
+        }
+
+        newNote.subject = `Subject ${context}`;
+        newNote.body = `This is the body for note ${context}`;
+        newNote.correlationId = `Correlation Id ${context}`;
+        newNote.trace = [`Note ${context} created`];
 
         return newNote;
     }
@@ -59,6 +67,14 @@ export class NotesComponent implements OnInit {
         return JSON.stringify(trace);
     }
 
+    public _onNewNote() {
+        const newNote: NoteModelDTO = this.createSampleNote();
+
+        console.debug(
+            'NotesComponent::onNewNote(): ' + JSON.stringify(newNote)
+        );
+    }
+
     public onNewNote() {
         const newNote: NoteModelDTO = this.createSampleNote();
 
@@ -66,10 +82,14 @@ export class NotesComponent implements OnInit {
         //      newNote.createdAt = new Date();
         //      this.notes.push(newNote);
 
+        console.debug(
+            'NotesComponent::onNewNote(): Posting new note to API:\n' + JSON.stringify(newNote)
+        );
+
         this.notesService.createNote(newNote).subscribe(
             (note: NoteModelDTO) => {
-                console.log(
-                    'NotesComponent::createNote(): ' + JSON.stringify(note)
+                console.debug(
+                    'NotesComponent::onNewNote():\n' + JSON.stringify(note)
                 );
                 this.refresh();
             },
