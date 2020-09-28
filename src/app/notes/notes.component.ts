@@ -45,7 +45,7 @@ export class NotesComponent implements OnInit {
 
         newNote.subject = `Subject ${context}`;
         newNote.body = `This is the body for note ${context}`;
-        newNote.correlationId = `Correlation Id ${context}`;
+        newNote.correlationId = `${context}`;
         newNote.trace = [`Note ${context} created`];
 
         return newNote;
