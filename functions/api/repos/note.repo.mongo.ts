@@ -6,6 +6,7 @@ export interface INoteDocument extends INote, Document {
     subject: string;
     body: string;
     correlationId: string;
+    trace: Array<string>;
 }
 
 export class MongoNoteRepository implements IRepository<INoteDocument, INote> {
@@ -28,7 +29,8 @@ export class MongoNoteRepository implements IRepository<INoteDocument, INote> {
         const NoteSchema: Schema = new Schema({
             subject: { type: String },
             body: { type: String },
-            correlationId: { type: String }
+            correlationId: { type: String },
+            trace: { type: [String], default: ['INSERT at ' + Date.now().toString()] }
         }, { timestamps: {} });
 
         NoteSchema.methods.getId = function() {

@@ -49,6 +49,7 @@ describe('Test create operation', () => {
         newNote.subject =  `Subject - ${Utils.randomAlphaString(128)}`;
         newNote.body = `Body - ${Utils.randomAlphaString(256)}`;
         newNote.correlationId = `${Utils.uuidv4()}`;
+        newNote.trace = [`INSERT ${newNote.subject} at ` + Date.now().toString()];
 
         await noteSvc.createNote(newNote);
 
@@ -65,12 +66,14 @@ describe('Test repo update operation', () => {
         note.subject =  `Subject - ${Utils.randomAlphaString(128)}`;
         note.body = `Body - ${Utils.randomAlphaString(256)}`;
         note.correlationId = `${Utils.uuidv4()}`;
+        note.trace = [`INSERT ${note.subject} at ` + Date.now().toString()];
 
         const createdNote: INote = await noteSvc.createNote(note);
 
         const noteToUpdate: Note = Note.fromINote(createdNote);
         const updatedBody: string = `Updated Body - ${Utils.randomAlphaString(256)}`;
         noteToUpdate.body = updatedBody;
+        noteToUpdate.trace.push(`UPDATED ${noteToUpdate.subject} at ` + Date.now().toString());
 
         await noteSvc.updateNote(noteToUpdate.getId(), noteToUpdate);
         const updatedNote: INote = await noteSvc.getNote(noteToUpdate.getId());
@@ -87,6 +90,7 @@ describe('Test repo delete operation', () => {
         note.subject =  `Subject - ${Utils.randomAlphaString(128)}`;
         note.body = `Body - ${Utils.randomAlphaString(256)}`;
         note.correlationId = `${Utils.uuidv4()}`;
+        note.trace = [`INSERT ${note.subject} at ` + Date.now().toString()];
 
         const createdNote: INote = await noteSvc.createNote(note);
 

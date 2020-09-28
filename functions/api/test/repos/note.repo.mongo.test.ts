@@ -35,6 +35,7 @@ describe("Let's see if we can insert a new item into the repo", () => {
             docToInsert.subject =  `Subject - ${Utils.randomAlphaString(128)}`;
             docToInsert.body = `Body - ${Utils.randomAlphaString(256)}`;
             docToInsert.correlationId = `${Utils.uuidv4()}`;
+            docToInsert.trace = [`INSERT ${docToInsert.subject} at ` + Date.now().toString()];
 
             const doc: INoteDocument = await noteMongoRepo.create(docToInsert);
 
@@ -96,6 +97,7 @@ describe("Let's see if we can update an existing item in the repo", () => {
             docToInsert.subject =  `Subject - ${Utils.randomAlphaString(128)}`;
             docToInsert.body = `Body - ${Utils.randomAlphaString(256)}`;
             docToInsert.correlationId = `${Utils.uuidv4()}`;
+            docToInsert.trace = [`INSERT ${docToInsert.subject} at ` + Date.now().toString()];
 
             const docToUpdate: INoteDocument = await noteMongoRepo.create(
                 docToInsert
@@ -104,6 +106,7 @@ describe("Let's see if we can update an existing item in the repo", () => {
                 128
             )}`;
             docToUpdate.subject = updatedSubject;
+            docToUpdate.trace.push(`UPDATED ${docToUpdate.subject} at ` + Date.now().toString());
 
             const updatedDoc: INoteDocument = await noteMongoRepo.update(
                 docToUpdate._id,
@@ -138,6 +141,7 @@ describe("Let's see if we can insert a new item into the repo", () => {
             docToInsert.subject =  `Subject - ${Utils.randomAlphaString(128)}`;
             docToInsert.body = `Body - ${Utils.randomAlphaString(256)}`;
             docToInsert.correlationId = `${Utils.uuidv4()}`;
+            docToInsert.trace = [`INSERT ${docToInsert.subject} at ` + Date.now().toString()];
 
             const insertedDoc: INoteDocument = await noteMongoRepo.create(
                 docToInsert

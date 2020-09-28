@@ -23,6 +23,20 @@ export class Note implements INote {
         note.body = iNote.body;
         note.correlationId = iNote.correlationId;
 
+        if (iNote?.trace?.length) note.trace = [...iNote.trace];
+
+        return note;
+    }
+
+    public static fromAny(incoming: any): Note {
+        const note: Note = new this(incoming?._id);
+
+        note.subject = incoming?.subject;
+        note.body = incoming?.body;
+        note.correlationId = incoming?.correlationId;
+
+        if (incoming?.trace?.length) note.trace = [...incoming.trace];
+
         return note;
     }
 

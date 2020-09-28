@@ -5,14 +5,7 @@ import { Server } from '@overnightjs/core';
 import { Logger } from '@overnightjs/logger';
 
 import { NoteService } from './services';
-
-import { INote } from './shared';
-import {
-    IRepository,
-    MongoNoteRepository,
-    InMemoryNoteRepository
-} from './repos';
-
+import { MongoNoteRepository, InMemoryNoteRepository } from './repos';
 import { ApiHealthController, NoteController } from './controllers';
 
 export class ApiServer extends Server {
