@@ -22,24 +22,25 @@ export class NoteNextStepService {
     }
 
     public async publish(note: INote) {
+/*
         let snsMessage: any = new Object();
 
         // Required for SNS messages with a MessageStructure of 'json'
         snsMessage.default = '';
         snsMessage.payload = note;
-
+*/
         const snsParams = {
             TopicArn: this.topicArn,
-            Subject: note.subject,
-            MessageStructure: 'json',
-            Message: JSON.stringify(snsMessage)
+            Subject: `RubeGoldberg Note (${note.subject})`,
+//          MessageStructure: 'json',
+            Message: JSON.stringify(note)
         };
 
         try {
             let response = await this.sns.publish(snsParams).promise();
 
             console.log(
-                `SNS Message sent\nresponse =\n` + JSON.stringify(response)
+                `SNS Message sent; response =\n` + JSON.stringify(response)
             );
 
             return response;
