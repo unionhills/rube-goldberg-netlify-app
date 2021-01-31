@@ -15,16 +15,20 @@ export class NoteNextStepService {
     private topicArn: string;
 
     constructor() {
-        this.setAWSConfig();
+        this.setAWSCredentials();
 
         this.topicArn = process.env.NEXTSTEP_AWS_SNS_TOPIC_ARN ?
             process.env.NEXTSTEP_AWS_SNS_TOPIC_ARN :
             process.env.AWS_SNS_TOPIC_ARN;
 
-        this.sns = new AWS.SNS();
+        const region = process.env.NEXTSTEP_AWS_REGION ?
+            process.env.NEXTSTEP_AWS_REGION :
+            process.env.AWS_REGION;
+
+        this.sns = new AWS.SNS({ region: region });
     }
 
-    private setAWSConfig(): void {
+    private setAWSCredentials(): void {
         AWS.config.logger = console;
 
         const accessKeyId: string = process.env.NEXTSTEP_AWS_ACCESS_KEY_ID ?
@@ -34,10 +38,6 @@ export class NoteNextStepService {
         const secretAccessKey = process.env.NEXTSTEP_AWS_SECRET_ACCESS_KEY ?
             process.env.NEXTSTEP_AWS_SECRET_ACCESS_KEY :
             process.env.AWS_SECRET_ACCESS_KEY;
-
-        const region = process.env.NEXTSTEP_AWS_REGION ?
-            process.env.NEXTSTEP_AWS_REGION :
-            process.env.AWS_REGION;
 
         AWS.config.credentials = new AWS.Credentials({
             accessKeyId: accessKeyId, secretAccessKey: secretAccessKey
