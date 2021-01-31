@@ -15,20 +15,43 @@ export class NoteNextStepService {
     private topicArn: string;
 
     constructor() {
-        AWS.config.logger = console;
-        this.topicArn = process.env.AWS_SNS_TOPIC_ARN;
+        this.setAWSConfig();
+
+        this.topicArn = process.env.NEXTSTEP_AWS_SNS_TOPIC_ARN ?
+            process.env.NEXTSTEP_AWS_SNS_TOPIC_ARN :
+            process.env.AWS_SNS_TOPIC_ARN;
 
         this.sns = new AWS.SNS();
     }
 
-    public async publish(note: INote) {
-/*
-        let snsMessage: any = new Object();
+    private setAWSConfig(): void {
+        AWS.config.logger = console;
 
-        // Required for SNS messages with a MessageStructure of 'json'
-        snsMessage.default = '';
-        snsMessage.payload = note;
-*/
+        const accessKeyId: string = process.env.NEXTSTEP_AWS_ACCESS_KEY_ID ?
+            process.env.NEXTSTEP_AWS_ACCESS_KEY_ID :
+            process.env.AWS_ACCESS_KEY_ID;
+
+        const secretAccessKey = process.env.NEXTSTEP_AWS_SECRET_ACCESS_KEY ?
+            process.env.NEXTSTEP_AWS_SECRET_ACCESS_KEY :
+            process.env.AWS_SECRET_ACCESS_KEY;
+
+        const region = process.env.NEXTSTEP_AWS_REGION ?
+            process.env.NEXTSTEP_AWS_REGION :
+            process.env.AWS_REGION;
+
+        AWS.config.credentials = new AWS.Credentials({
+            accessKeyId: accessKeyId, secretAccessKey: secretAccessKey
+        });
+    }
+
+    public async publish(note: INote) {
+        /*
+                let snsMessage: any = new Object();
+        
+                // Required for SNS messages with a MessageStructure of 'json'
+                snsMessage.default = '';
+                snsMessage.payload = note;
+        */
         const snsParams = {
             TopicArn: this.topicArn,
             Subject: `RubeGoldberg Note (${note.subject})`,
