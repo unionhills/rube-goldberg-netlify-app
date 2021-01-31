@@ -1,8 +1,8 @@
 {
   "name": "rube-goldberg-app",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "scripts": {
-    "postinstall": "npm install --prefix functions/api functions/api",
+    "postinstall": "cd functions/api && npm install",
     "ng": "ng",
     "start": "ng serve",
     "prebuild": "rimraf dist",
@@ -10,7 +10,7 @@
     "postbuild": "netlify-lambda install",
     "test": "npm run test:ui && npm run test:functions",
     "test:ui": "ng test",
-    "test:functions": "cd functions/api && npm test; cd $OLDPWD",
+    "test:functions": "cd functions/api && npm test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "build:ui": "ng build",
